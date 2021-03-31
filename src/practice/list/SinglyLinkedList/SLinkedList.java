@@ -202,7 +202,7 @@ public class SLinkedList<E> implements List<E> {
 
         prevNode.next = nextNode;   // 이전 노드가 가리키는 노드를 삭제하려는 노드의 다음 노드로 변경
 
-        removeNode.data = null;     // 데이터 삭제제
+        removeNode.data = null;     // 데이터 삭제
         removeNode.next = null;
         size--;
 
