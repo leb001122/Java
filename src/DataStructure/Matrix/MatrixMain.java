@@ -1,4 +1,4 @@
-package dataStructure.first;
+package DataStructure.Matrix;
 
 public class MatrixMain {
     public static void main(String [] args) {

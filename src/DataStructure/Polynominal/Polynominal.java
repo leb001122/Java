@@ -1,9 +1,9 @@
-package dataStructure.second;
+package DataStructure.Polynominal;
 
 public class Polynominal
 {
     private static final int INIT_SIZE = 3;
-    private Term [] termArray;
+    private Term[] termArray;
     private int terms;
 
     public Polynominal() {

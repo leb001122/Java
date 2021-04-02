@@ -1,4 +1,4 @@
-package dataStructure.first;
+package DataStructure.Algorithm;
 
 public class HanoiTowerAlgorithm {
 

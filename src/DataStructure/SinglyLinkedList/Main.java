@@ -1,37 +1,36 @@
 package DataStructure.SinglyLinkedList;
 
 import java.io.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        StudentList sList = new StudentList();
+
         try {
-            File file = new File(String.valueOf(args[0]));
+            File file = new File(args[0]);
             if (!file.exists())
                 file.createNewFile();
 
-            StudentList sList = new StudentList();
             readFile(file, sList);
             displayMenu();
-            Scanner sc = new Scanner(System.in);
-            int menu;
 
-            do
+            while(true)
             {
                 System.out.print("원하는 기능을 선택하세요. : ");
-                menu = sc.nextInt();
+                int menu = sc.nextInt();
                 sc.nextLine();
                 handleMenu(file, menu, sc, sList);
+                if(menu==4)
+                    return;
             }
-            while (menu != 4);
-
-            sc.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        sc.close();
     }
 
     public static void displayMenu()
@@ -54,8 +53,7 @@ public class Main {
                 generateStudent(sList, sc.nextLine());
                 break;
             case 2:
-                System.out.print("학번을 입력하세요. : ");
-                deleteStudent(sc, sList);
+                removeStudent(sList, sc);
                 break;
             case 3:
                 retrieveAll(sList);
@@ -70,22 +68,18 @@ public class Main {
 
     public static void saveFile(File file, StudentList sList)
     {
-        try
-        {
+        try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             bw.write(String.valueOf(sList));  // why??????????????????????
             bw.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static void readFile(File file, StudentList sList)
     {
-        try
-        {
+        try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
 
@@ -93,51 +87,57 @@ public class Main {
                 generateStudent(sList, line);
 
             br.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static void retrieveAll(StudentList sList)
     {
-        System.out.println(sList);
-    }
-
-    public static void deleteStudent(Scanner sc, StudentList sList)
-    {
-        String id = sc.next();
-        Node<Student> node = sList.search(id);
-        if (node != null)
-            System.out.println(node);
+        if(sList.isEmpty())
+            System.out.println("학생 리스트가 비어있습니다.");
         else
-            System.out.println("일치하는 학번이 존재하지 않습니다.");
+            System.out.println(sList);
     }
 
     public static void generateStudent(StudentList sList, String input)
     {
-        try
-        {
+        try {
             String[] array;
             array = input.split(" ");
 
-            // 0번째(학번)가 숫자 형태의 문자열이 아닐 경우 NumberFormatException 발생
-            Integer.parseInt(array[0]);
+            if(array.length<2) // 학번만 입력된 경우
+                throw new InputMismatchException();
 
             Student student = new Student(array[0], array[1]);
-            sList.add(student); // 만약 중복된 학생이 있다면 DuplicatedStudentException 발생
+            sList.add(student);
 
-            String str = "";
-            for(int i=2; i<array.length; str+=array[i], i++) {
-            }
-            student.setClub(new ClubList(str));
+            if(array.length>2) //20200881 이은빈    (공백들)   -> 이렇게 받아졌을땐..? 디버깅 해봤는데 문제없음.
+                generateClubList(array, student);
 
-        } catch (NumberFormatException e) {
-            System.out.println("Warning : 잘못된 학번");
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("IndexOutOfBoundsException");
+        } catch (DuplicatedStudentIdException e) {
+            System.out.println("중복된 학번의 학생이 존재합니다.");
+        } catch (InputMismatchException e) {
+            System.out.println("잘못된 입력입니다.");
         }
     }
-}
 
+    public static void generateClubList(String [] array, Student student)
+    {
+        String str = "";
+        for(int i=2; i<array.length; str+=array[i]+" ", i++);
+
+        student.setClub(new ClubList(str));
+    }
+
+    public static void removeStudent(StudentList sList, Scanner sc)
+    {
+        try {
+            System.out.print("학번을 입력하세요. : ");
+            sList.remove(sc.nextLine());
+        }catch (NoSuchStudentIdException e){
+            System.out.println("해당 학번의 학생이 존재하지 않습니다.");
+        }
+
+    }
+}

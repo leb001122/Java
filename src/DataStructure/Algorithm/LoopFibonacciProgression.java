@@ -1,4 +1,4 @@
-package dataStructure.first;
+package DataStructure.Algorithm;
 
 import java.util.Scanner;
 

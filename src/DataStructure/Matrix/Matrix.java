@@ -1,4 +1,4 @@
-package dataStructure.first;
+package DataStructure.Matrix;
 
 import java.util.Random;
 

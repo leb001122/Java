@@ -10,7 +10,6 @@ public class Student
     {
         this.id = id;
         this.name = name;
-        this.club = null;
     }
 
     public Student(String id, String name, ClubList club)
@@ -29,7 +28,10 @@ public class Student
 
     public String toString()
     {
-        return id+" "+name+" "+club;
+        if(club==null)
+            return id+" "+name;
+        else
+            return id+" "+name+" "+club;
     }
 
 }

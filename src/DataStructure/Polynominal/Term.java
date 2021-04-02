@@ -1,4 +1,4 @@
-package dataStructure.second;
+package DataStructure.Polynominal;
 
 public class Term {
     private double coef; //계수

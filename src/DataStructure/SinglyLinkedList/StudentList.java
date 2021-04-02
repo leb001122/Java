@@ -10,15 +10,15 @@ public class StudentList extends SingleList<Student>
             return;
         }
 
-        Node<Student> now = head, prevNode = null;
+        Node<Student> now = head;
+        Node<Student> prevNode = null;
 
         for(String id; now!=null; prevNode=now, now=now.getNext())
         {
             id = now.getData().getId();
             int difference = id.compareTo(newData.getId());
 
-            // 중복된 학번인 경우
-            if(difference == 0)
+            if(difference == 0)  // 중복된 학번인 경우
                 throw new DuplicatedStudentIdException();
             if(difference > 0)
             {
@@ -26,62 +26,68 @@ public class StudentList extends SingleList<Student>
                     addFirst(newData);
                 else // 중간에 끼워 넣을 경우
                 {
-                    prevNode.setNext(new Node<Student>(newData, now));
+                    prevNode.setNext(new Node<>(newData, now));
                     size++;
                 }
                 return;
             }
             // difference < 0인 경우 다음 노드 확인인
         }
-        // 새로 들오는 학번이 가장 큰 경우
-        prevNode.setNext(new Node<Student>(newData));
+        // 새로 들어오는 학번이 가장 큰 경우
+        prevNode.setNext(new Node<>(newData));
         size++;
     }
 
-    // 학생의 학번으로 학생 찾기
-    public Node<Student> search(String id)
+    private Node<Student> searchPrev(String id)
     {
-        for(Node<Student> temp = head; temp!=null; temp=temp.getNext())
+
+        for(Node<Student> now = head, prev = null;
+            now != null;
+            prev = now, now = now.getNext())
         {
-            if(temp.getData().getId().equals(id))
-                return temp;
+            if(now.getData().getId().equals(id))
+            {
+                return prev;   // 찾으려는 노드의 이전 노드 반환
+            }
         }
-        return null;
+        throw new NoSuchStudentIdException();
+    }
+
+    public void remove(String id)
+    {
+        Node<Student> prevNode = searchPrev(id);
+
+        if(prevNode==null)
+        {
+            removeFirst();
+            return;
+        }
+
+        Node<Student> now = prevNode.getNext();
+        prevNode.setNext(now.getNext());
+        now.setData(null);
+        now.setNext(null);
+        size--;
     }
 
     public String toString()
     {
         if(isEmpty())
-            return "비어있는 리스트입니다.";
+            return "";
 
         String str = "";
-        Node<Student> studentNode = head;
+        Node<Student> stNode = head;
 
-        for(int i=0; i<size; i++, studentNode=studentNode.getNext())
-            str += studentNode+"\n";
+        for(int i=0; i<size-1; i++, stNode=stNode.getNext())
+            str += stNode + "\n";
 
+        str += stNode;
         return str;
     }
 }
-/**
- * throws 사용
- * 명시적 에러 처리 - 실행을 하기 전 컴파일 단계에서 try-catch를
- * 선언하지 않으면 컴파일이 되지 않게 에러를 발생시킴
- */
 
-/**
- * throws 사용 x
- * Exception을 상속 받아서 에러 클래스를 만들면 전부 명시적 에러처리 해야함.
- * RuntimeException을 상속 받으면 전부 묵시적 에러처리가 됨
- * 에러 클래스 계층 : Throwable - Exception - RuntimeException
- * 묵시적 에러 처리 - 에러를 발생시키지만 컴파일 하는데 전혀 문제가 없다.
- * 난 잘 동작하는데 가끔씩 에러가 발생해~
- */
+class DuplicatedStudentIdException extends RuntimeException {
+}
 
-class DuplicatedStudentIdException extends RuntimeException
-{
-    DuplicatedStudentIdException()
-    {
-        System.out.println("중복된 학번이 존재합니다.");
-    }
+class NoSuchStudentIdException extends  RuntimeException {
 }

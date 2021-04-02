@@ -1,4 +1,4 @@
-package dataStructure.second;
+package DataStructure.Polynominal;
 
 import java.util.Scanner;
 
@@ -20,8 +20,6 @@ public class PolynominalMain
 
         Polynominal res;
         res = Polynominal.multiply(poly1, poly2);
-        // res.multiply(poly1, poly2);
-        // res = poly1.multiply(ploy2);
         System.out.println("곱한 다항식 : "+res);
 
         sc.close();
@@ -39,8 +37,5 @@ public class PolynominalMain
             poly.add(new Term(coef, exp));
 
         }while(exp != 0);
-
-        // sc.close();
-        // 닫아 주니까 오류 났음.. 왜??
     }
 }

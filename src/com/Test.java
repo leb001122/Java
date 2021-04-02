@@ -1,9 +1,11 @@
 package com;
 
+import java.util.Scanner;
+
 public class Test {
     public static void main(String[] args) {
-        double a = 1.0;
-        if(a - (int)a == 0)
-            System.out.println(a);
+        Scanner sc  = new Scanner(System.in);
+        sc.next();
+        System.out.println(sc.nextLine()+"/");
     }
 }
