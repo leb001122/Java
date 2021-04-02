@@ -16,7 +16,12 @@ public class Polynominal
         terms = 0;
     }
 
-    public void resize(int newSize)
+    public int getTerms()
+    {
+        return terms;
+    }
+
+    private void resize(int newSize)
     {
         Term [] tmp = new Term[newSize];
         for(int i=0; i<terms; i++)
@@ -61,7 +66,7 @@ public class Polynominal
         }
     }
 
-    public void insert(Term t, int index)
+    private void insert(Term t, int index)
     {
         if(terms == termArray.length)
             resize(terms*2);
@@ -72,7 +77,7 @@ public class Polynominal
         terms++;
     }
 
-    public void delete(int index)
+    private void delete(int index)
     {
         for(int i=index; i<terms-1; i++)
             termArray[i] = termArray[i+1];
@@ -106,6 +111,9 @@ public class Polynominal
 
     public String toString()
     {
+        if(terms == 0)
+            return "0";
+
         String res = "";
 
         for(int i=0; i<terms; i++)
