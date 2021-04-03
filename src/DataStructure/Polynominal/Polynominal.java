@@ -29,7 +29,7 @@ public class Polynominal
         termArray = tmp;
     }
 
-    public void add(Term term)
+    public void addTerm(Term term)
     {
         if(terms == termArray.length)
             resize(terms*2);
@@ -88,22 +88,35 @@ public class Polynominal
             resize(termArray.length / 2);
     }
 
-    public static Polynominal multiply(Polynominal poly1, Polynominal poly2)
+    public Polynominal addPoly(Polynominal poly)
+    {
+        Polynominal res = new Polynominal();
+
+        // poly1의 termArray의 값들을 res에 저장
+        for(int i=0; i<terms; i++)
+            res.addTerm(new Term(termArray[i].getCoef(), termArray[i].getExp()));
+
+        // poly2의 termArray의 값들을 res에 저장
+        for(int i=0; i<poly.terms; i++)
+            res.addTerm(new Term(poly.termArray[i].getCoef(), poly.termArray[i].getExp()));
+
+        return res;
+    }
+
+    public Polynominal multiplyPoly(Polynominal poly)
     {
         double coef;
         int exp;
 
         Polynominal res = new Polynominal();
-        Term [] array1 = poly1.termArray;
-        Term [] array2 = poly2.termArray;
 
-        for(int i=0; i<poly1.terms; i++)
+        for(int i=0; i<terms; i++)
         {
-            for(int j=0; j<poly2.terms; j++)
+            for(int j=0; j<poly.terms; j++)
             {
-                coef = array1[i].getCoef() * array2[j].getCoef();
-                exp = array1[i].getExp() + array2[j].getExp();
-                res.add(new Term(coef, exp));
+                coef = this.termArray[i].getCoef() * poly.termArray[j].getCoef();
+                exp = this.termArray[i].getExp() + poly.termArray[j].getExp();
+                res.addTerm(new Term(coef, exp));
             }
         }
         return res;

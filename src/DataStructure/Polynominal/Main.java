@@ -14,11 +14,15 @@ public class Main
         input(sc, poly1, 1);
         System.out.println("다항식1 : "+poly1);
         input(sc, poly2, 2);
-        System.out.println("다항식1 : "+poly2);
+        System.out.println("다항식2 : "+poly2);
 
         Polynominal poly3;
-        poly3 = Polynominal.multiply(poly1, poly2);
+        poly3 = poly1.multiplyPoly(poly2);
         System.out.println("곱한 다항식 : "+poly3);
+
+        Polynominal poly4;
+        poly4 = poly1.addPoly(poly2);
+        System.out.println("더한 다항식 : "+poly4);
 
         sc.close();
     }
@@ -42,7 +46,7 @@ public class Main
         {
             coef = sc.nextDouble(); exp = sc.nextInt();
             if(coef == 0 || exp < 0) continue; // 계수가 0이거나 지수가 음수인 경우 항 추가하지 않음.
-            poly.add(new Term(coef, exp));
+            poly.addTerm(new Term(coef, exp));
 
         }while(exp != 0);
     }
